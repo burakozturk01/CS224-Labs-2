@@ -1,0 +1,453 @@
+CS224
+Lab 01
+Section 02
+Burak Öztürk
+21901841
+
+Part1: --------------------------------------------------------------------
+	.text
+	
+	addi $s0, $zero, 20	# Max array size
+	add  $s1, $zero, $zero	# User-defined array size
+	la   $s2, array		# Array pointer
+	
+init:	# Printing message
+	li $v0, 4
+	la $a0, size
+	syscall
+	
+	# Reading size
+	li $v0, 5
+	syscall
+	
+	# Checking array size for upper bound 20
+	slt $t0, $s0, $v0
+	bne $t0, $zero, init
+	
+	# Checking array size for lower bound 1
+	slt $t0, $zero, $v0
+	beq $t0, $zero, init
+	
+	add $s1, $zero, $v0
+	# Initializing size done.
+	
+	li $v0, 4
+	la $a0, newL
+	syscall
+	
+	la $a0, elems1
+	syscall
+	
+	li $v0, 1
+	add $a0, $zero, $s1
+	syscall
+	
+	li $v0, 4
+	la $a0, elems2
+	syscall
+	
+	add $t1, $zero, $zero	# Loop counter
+	
+read:	# Reading elements
+	li $v0, 5
+	syscall
+	
+	# Store value and shift pointer to right
+	sw $v0, ($s2)
+	addi $s2, $s2, 4
+	
+	# Increment counter
+	addi $t1, $t1, 1
+	
+	# Loop until array full
+	slt $t0, $t1, $s1
+	bne $t0, $zero, read
+	# Reading done.
+	
+	# Array pointer restored
+	la   $s2, array
+	
+	# Printing array
+	li $v0, 4
+	la $a0, newL
+	syscall
+	
+	la $a0, arr
+	syscall
+	
+	la $a0, p1
+	syscall
+	
+	# Print first element
+	li $v0, 1
+	lw $a0, ($s2)
+	syscall
+	
+	# For size 1 arrays
+	slt $t0, $v0, $s1
+	bne $t0, $zero, dSkip1
+	
+	li $v0, 4
+	la $a0, p2
+	syscall
+	
+	j skip1
+	
+dSkip1:	# For normal arrays
+	
+	# Increment pointer
+	addi $s2, $s2, 4
+	
+	addi $t1, $zero, 1	# Loop counter
+	
+	# Print other elements
+print:	li $v0, 4
+	la $a0, c
+	syscall
+	
+	li $v0, 1
+	lw $a0, ($s2)
+	syscall
+	
+	addi $s2, $s2, 4
+	
+	addi $t1, $t1, 1
+	slt $t0, $t1, $s1
+	bne $t0, $zero, print
+	
+	li $v0, 4
+	la $a0, p2
+	syscall
+	#Print done
+	
+	# Array pointer restored
+	la   $s2, array
+	
+skip1:	# For one-long arrays
+	
+	la $a0, newL
+	syscall
+	
+	# Reversing
+	
+	# Last element pointer
+	add $t1, $zero, $zero
+	add $t1, $t1, $s1
+	sll $t1, $t1, 2
+	add $t1, $t1, $s2
+	addi $t1, $t1, -4
+	
+	# t2, t3: Swap temporary
+	
+rev:	lw $t2, ($s2)
+	lw $t3, ($t1)
+	
+	sw $t3, ($s2)
+	sw $t2, ($t1)
+	
+	addi $s2, $s2, 4
+	addi $t1, $t1, -4
+	
+	slt $t0, $s2, $t1
+	bne $t0, $zero, rev
+	# Reversing done
+	
+	# Array pointer restored
+	la   $s2, array
+	
+	# Printing reversed array
+	li $v0, 4
+	la $a0, newL
+	syscall
+	
+	la $a0, rArr
+	syscall
+	
+	la $a0, p1
+	syscall
+	
+	# Print first element
+	li $v0, 1
+	lw $a0, ($s2)
+	syscall
+	
+	# For size 1 arrays
+	slt $t0, $v0, $s1
+	bne $t0, $zero, dSkip2
+	
+	li $v0, 4
+	la $a0, p2
+	syscall
+	
+	j skip2
+	
+	dSkip2:	# For normal arrays
+	
+	# Increment pointer
+	addi $s2, $s2, 4
+	
+	addi $t1, $zero, 1	# Loop counter
+	
+	# Print other elements
+print2:	li $v0, 4
+	la $a0, c
+	syscall
+	
+	li $v0, 1
+	lw $a0, ($s2)
+	syscall
+	
+	addi $s2, $s2, 4
+	
+	addi $t1, $t1, 1
+	slt $t0, $t1, $s1
+	bne $t0, $zero, print2
+	
+	li $v0, 4
+	la $a0, p2
+	syscall
+	#Print done
+	
+skip2:	# For one-long arrays
+	
+	# Program done
+	li $v0, 10
+	syscall
+	
+zArr:	# One element arrays:
+	
+	
+	.data
+	
+array:	.space 80
+
+size:	.asciiz "Enter array size (1-20): "
+elems1:	.asciiz "Enter "
+elems2:	.asciiz " integer element(s):\n"
+arr:	.asciiz "Array: "
+rArr:	.asciiz "Reversed array: "
+
+newL:	.asciiz "\n"
+p1:	.asciiz "["
+p2:	.asciiz "]"
+c:	.asciiz ", "
+
+Part2: --------------------------------------------------------------------
+	.text
+	
+	addi $s0, $zero, 20	# Max array size
+	add  $s1, $zero, $zero	# User-defined array size
+	la   $s2, array		# Array pointer
+	
+init:	# Printing message
+	li $v0, 4
+	la $a0, size
+	syscall
+	
+	# Reading size
+	li $v0, 5
+	syscall
+	
+	# Checking array size for upper bound 20
+	slt $t0, $s0, $v0
+	bne $t0, $zero, init
+	
+	# Checking array size for lower bound 0
+	slt $t0, $v0, $zero
+	bne $t0, $zero, init
+	
+	# Zero array is a palindrome automatically.
+	addi $t0, $v0, -1
+	slt $t0, $t0, $zero
+	bne $t0, $zero, isP
+	
+	add $s1, $zero, $v0
+	# Initializing size done.
+	
+	li $v0, 4
+	la $a0, newL
+	syscall
+	
+	la $a0, elems1
+	syscall
+	
+	li $v0, 1
+	add $a0, $zero, $s1
+	syscall
+	
+	li $v0, 4
+	la $a0, elems2
+	syscall
+	
+	add $t1, $zero, $zero	# Loop counter
+	
+read:	# Reading elements
+	li $v0, 5
+	syscall
+	
+	# Store value and shift pointer to right
+	sw $v0, ($s2)
+	addi $s2, $s2, 4
+	
+	# Increment counter
+	addi $t1, $t1, 1
+	
+	# Loop until array full
+	slt $t0, $t1, $s1
+	bne $t0, $zero, read
+	# Reading done.
+	
+	# One element arrays are palindromes automatically.
+	addi $t0, $s1, -2
+	slt $t0, $t0, $zero
+	bne $t0, $zero, isP
+	
+	# Array pointer restored
+	la   $s2, array
+	
+	li $v0, 4
+	la $a0, newL
+	syscall
+	
+	# Last element pointer
+	add $t1, $zero, $zero
+	add $t1, $t1, $s1
+	sll $t1, $t1, 2
+	add $t1, $t1, $s2
+	addi $t1, $t1, -4
+	
+pCheck:	lw $t2, ($s2)
+	lw $t3, ($t1)
+	
+	bne $t2, $t3, notP
+	
+	addi $s2, $s2, 4
+	addi $t1, $t1, 4
+	
+	slt $t0, $s2, $t1
+	bne $t0, $zero, isP
+	
+exit:	li $v0, 10
+	syscall
+	# Program done
+	
+	# Is palindrome message
+isP:	li $v0, 4
+	la $a0, isMsg
+	syscall
+	j exit
+	
+	# Not palindrome message
+notP:	li $v0, 4
+	la $a0, notMsg
+	syscall
+	j exit
+	
+	.data
+	
+array:	.space 80
+
+size:	.asciiz "Enter array size (1-20): "
+elems1:	.asciiz "Enter "
+elems2:	.asciiz " integer element(s):\n"
+
+isMsg:	.asciiz "The array is a palindrome"
+notMsg:	.asciiz "The array is not a palindrome"
+
+newL:	.asciiz "\n"
+
+Part3: --------------------------------------------------------------------
+	.text
+	addi $s4, $zero, 8
+	addi $s5, $zero, -8
+	
+	# x -> $s0
+	add $s0, $zero, $zero
+	
+	# a -> $s1
+	add $s1, $zero, $zero
+	
+	li $v0, 4
+	la $a0, msgA
+	syscall
+	
+	li $v0, 5
+	syscall
+	add $s1, $zero, $v0
+	
+	li $v0, 4
+	la $a0, newL
+	syscall
+	
+	# b -> $s2
+	add $s2, $zero, $zero
+	
+	li $v0, 4
+	la $a0, msgB
+	syscall
+	
+	li $v0, 5
+	syscall
+	add $s2, $zero, $v0
+	
+	li $v0, 4
+	la $a0, newL
+	syscall
+	
+	# c -> $s3
+	add $s3, $zero, $zero
+	
+	li $v0, 4
+	la $a0, msgC
+	syscall
+	
+	li $v0, 5
+	syscall
+	add $s3, $zero, $v0
+	
+	li $v0, 4
+	la $a0, newL
+	syscall
+	
+	# Calculate b-c
+	sub $t1, $s2, $s3
+	
+	# Calculate a*(b-c)
+	mult $s1, $t1
+	mflo $t1
+	
+calc:	# Calculate (a*(b-c)) % 8
+	
+	# If t1 >= 8 then subtract 8
+	slt $t0, $t1, $s4
+	beq $t0, $zero, sub8
+	
+	# If t1 <= -8 then add 8
+	slt $t0, $s5, $t1
+	beq $t0, $zero, add8
+	
+	# If 8 > t1 > -8 then t1 = (a*(b-c)) % 8
+	li $v0, 4
+	la $a0, msgX
+	syscall
+	
+	li $v0, 1
+	add $a0, $zero, $t1
+	syscall
+	
+exit:	li $v0, 10
+	syscall
+	
+add8:	addi $t1, $t1, 8
+	j calc
+
+sub8:	addi $t1, $t1, -8
+	j calc
+	
+	.data
+msgA:	.asciiz "Enter a: "
+msgB:	.asciiz "Enter b: "
+msgC:	.asciiz "Enter c: "
+msgX:	.asciiz "x = "
+
+newL:	.asciiz "\n"

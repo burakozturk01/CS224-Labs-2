@@ -1,0 +1,266 @@
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Courier New;}}
+{\colortbl ;\red255\green255\blue0;}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\f0\fs22\lang1033\par
+// Written by David_Harris@hmc.edu\par
+\par
+// Top level system including MIPS and memories\par
+\par
+\par
+module top  (input   logic \tab  clk, reset,            \par
+\tab      output  logic[31:0] writedata, dataadr,            \par
+\tab      output  logic       memwrite);  \par
+\par
+   logic [31:0] pc, instr, readdata;    \par
+\par
+   // instantiate processor and memories  \par
+   mips mips (clk, reset, pc, instr, memwrite, dataadr, writedata, readdata);  \par
+   imem imem (pc[7:2], instr);  \par
+   dmem dmem (clk, memwrite, dataadr, writedata, readdata);\par
+\par
+endmodule\par
+\par
+\par
+\par
+// External data memory used by MIPS single-cycle processor\par
+\par
+module dmem (input  logic        clk, we,\par
+             input  logic[31:0]  a, wd,\par
+             output logic[31:0]  rd);\par
+\par
+   logic  [31:0] RAM[63:0];\par
+  \par
+   assign rd = RAM[a[31:2]];    // word-aligned  read (for lw)\par
+\par
+   always_ff @(posedge clk)\par
+     if (we)\par
+       RAM[a[31:2]] <= wd;      // word-aligned write (for sw)\par
+\par
+endmodule\par
+\par
+\par
+\par
+// External instruction memory used by MIPS single-cycle\par
+// processor. It models instruction memory as a stored-program \par
+// ROM, with address as input, and instruction as output\par
+\par
+\par
+module imem ( input logic [5:0] addr, output logic [31:0] instr);\par
+\par
+// imem is modeled as a lookup table, a stored-program byte-addressable ROM\par
+\tab always_comb\par
+\tab    case (\{addr,2'b00\})\tab\tab    \tab // word-aligned fetch\par
+//\tab\tab address\tab\tab instruction\par
+//\tab\tab -------\tab\tab -----------\par
+\tab\tab 8'h00: instr = 32'h20020005;  \tab // disassemble, by hand \par
+\tab\tab 8'h04: instr = 32'h2003000c;  \tab // or with a program,\par
+\tab\tab 8'h08: instr = 32'h2067fff7;  \tab // to find out what\par
+\tab\tab 8'h0c: instr = 32'h00e22025;  \tab // this program does!\par
+\tab\tab 8'h10: instr = 32'h00642824;\par
+\tab\tab 8'h14: instr = 32'h00a42820;\par
+\tab\tab 8'h18: instr = 32'h10a7000a;\par
+\tab\tab 8'h1c: instr = 32'h0064202a;\par
+\tab\tab 8'h20: instr = 32'h10800001;\par
+\tab\tab 8'h24: instr = 32'h20050000;\par
+\tab\tab 8'h28: instr = 32'h00e2202a;\par
+\tab\tab 8'h2c: instr = 32'h00853820;\par
+\tab\tab 8'h30: instr = 32'h00e23822;\par
+\tab\tab 8'h34: instr = 32'hac670044;\par
+\tab\tab 8'h38: instr = 32'h8c020050;\par
+\tab\tab 8'h3c: instr = 32'h08000011;\par
+\tab\tab 8'h40: instr = 32'h20020001;\par
+\tab\tab 8'h44: instr = 32'hac020054;\par
+\tab\tab 8'h48: instr = 32'h08000012;\tab // j 48, so it will loop here\par
+\tab      default:  instr = \{32\{1'bx\}\};\tab // unknown address\par
+\tab    endcase\par
+endmodule\par
+\par
+\par
+// single-cycle MIPS processor, with controller and datapath\par
+\par
+module mips (input  logic        clk, reset,\par
+             output logic[31:0]  pc,\par
+             input  logic[31:0]  instr,\par
+             output logic        memwrite,\par
+             output logic[31:0]  aluout, writedata,\par
+             input  logic[31:0]  readdata);\par
+\par
+  logic        memtoreg, pcsrc, zero, alusrc, regdst, regwrite, jump;\par
+  logic [2:0]  alucontrol;\par
+\par
+  controller c (instr[31:26], instr[5:0], zero, memtoreg, memwrite, pcsrc,\par
+                        alusrc, regdst, regwrite, jump, alucontrol);\par
+\par
+  datapath dp (clk, reset, memtoreg, pcsrc, alusrc, regdst, regwrite, jump,\par
+                          alucontrol, zero, pc, instr, aluout, writedata, readdata);\par
+\par
+endmodule\par
+module controller(input  logic[5:0] op, funct,\par
+                  input  logic     zero,\par
+                  output logic     memtoreg, memwrite,\par
+                  output logic     pcsrc, alusrc,\par
+                  output logic     regdst, regwrite,\par
+                  output logic     jump,\par
+                  output logic[2:0] alucontrol);\par
+\par
+   logic [1:0] aluop;\par
+   logic       branch;\par
+\par
+   maindec md (op, memtoreg, memwrite, branch, alusrc, regdst, regwrite, \par
+\tab\tab  jump, aluop);\par
+\par
+   aludec  ad (funct, aluop, alucontrol);\par
+\par
+   assign pcsrc = branch & zero;\par
+\par
+endmodule\par
+\par
+module maindec (input logic[5:0] op, \par
+\tab               output logic memtoreg, memwrite, branch,\par
+\tab               output logic alusrc, regdst, regwrite, jump,\par
+\tab               output logic[1:0] aluop );\par
+   logic [8:0] controls;\par
+\par
+   assign \{regwrite, regdst, alusrc, branch, memwrite,\par
+                memtoreg,  aluop, jump\} = controls;\par
+\par
+  always_comb\par
+    case(op)\par
+      6'b000000: controls <= 9'b110000100; // R-type\par
+      6'b100011: controls <= 9'b101001000; // LW\par
+      6'b101011: controls <= 9'b001010000; // SW\par
+      6'b000100: controls <= 9'b000100010; // BEQ\par
+      6'b001000: controls <= 9'b101000000; // ADDI\par
+      6'b000010: controls <= 9'b000000001; // J\par
+      default:   controls <= 9'bxxxxxxxxx; // illegal op\par
+    endcase\par
+endmodule\par
+\par
+module aludec (input    logic[5:0] funct,\par
+               input    logic[1:0] aluop,\par
+               output   logic[2:0] alucontrol);\par
+  always_comb\par
+    case(aluop)\par
+      2'b00: alucontrol  = 3'b010;  // add  (for lw/sw/addi)\par
+      2'b01: alucontrol  = 3'b110;  // sub   (for beq)\par
+      default: case(funct)          // R-TYPE instructions\par
+          6'b100000: alucontrol  = 3'b010; // ADD\par
+          6'b100010: alucontrol  = 3'b110; // SUB\par
+          6'b100100: alucontrol  = 3'b000; // AND\par
+          6'b100101: alucontrol  = 3'b001; // OR\par
+          6'b101010: alucontrol  = 3'b111; // SLT\par
+          default:   alucontrol  = 3'bxxx; // ???\par
+        endcase\par
+    endcase\par
+endmodule\par
+\par
+module datapath (input  logic clk, reset, memtoreg, pcsrc, alusrc, regdst,\par
+                 input  logic regwrite, jump, \par
+\tab\tab  input  logic[2:0]  alucontrol, \par
+                 output logic zero, \par
+\tab\tab  output logic[31:0] pc, \par
+\tab          input  logic[31:0] instr,\par
+                 output logic[31:0] aluout, writedata, \par
+\tab          input  logic[31:0] readdata);\par
+\par
+  logic [4:0]  writereg;\par
+  logic [31:0] pcnext, pcnextbr, pcplus4, pcbranch;\par
+  logic [31:0] signimm, signimmsh, srca, srcb, result;\par
+ \par
+  // next PC logic\par
+  flopr #(32) pcreg(clk, reset, pcnext, pc);\par
+  adder       pcadd1(pc, 32'b100, pcplus4);\par
+  sl2         immsh(signimm, signimmsh);\par
+  adder       pcadd2(pcplus4, signimmsh, pcbranch);\par
+  mux2 #(32)  pcbrmux(pcplus4, pcbranch, pcsrc,\par
+                      pcnextbr);\par
+  mux2 #(32)  pcmux(pcnextbr, \{pcplus4[31:28], \par
+                    instr[25:0], 2'b00\}, jump, pcnext);\par
+\par
+// register file logic\par
+   regfile     rf (clk, regwrite, instr[25:21], instr[20:16], writereg,\par
+                   result, srca, writedata);\par
+\par
+   mux2 #(5)    wrmux (instr[20:16], instr[15:11], regdst, writereg);\par
+   mux2 #(32)  resmux (aluout, readdata, memtoreg, result);\par
+   signext         se (instr[15:0], signimm);\par
+\par
+  // ALU logic\par
+   mux2 #(32)  srcbmux (writedata, signimm, alusrc, srcb);\par
+   alu         alu (srca, srcb, alucontrol, aluout, zero);\par
+\par
+endmodule\par
+\par
+\par
+module regfile (input    logic clk, we3, \par
+                input    logic[4:0]  ra1, ra2, wa3, \par
+                input    logic[31:0] wd3, \par
+                output   logic[31:0] rd1, rd2);\par
+\par
+  logic [31:0] rf [31:0];\par
+\par
+  // three ported register file: read two ports combinationally\par
+  // write third port on rising edge of clock. Register0 hardwired to 0.\par
+\par
+  \highlight1 always_ff@(posedge clk)\highlight0\par
+     if (we3) \par
+         rf [wa3] <= wd3;\tab\par
+\par
+  assign rd1 = (ra1 != 0) ? rf [ra1] : 0;\par
+  assign rd2 = (ra2 != 0) ? rf[ ra2] : 0;\par
+\par
+endmodule\par
+\par
+\par
+module alu(input  logic [31:0] a, b, \par
+           input  logic [2:0]  alucont, \par
+           output logic [31:0] result,\par
+           output logic zero);\par
+\par
+  // details of the model need to be \par
+  // filled in by you, the designer !\par
+endmodule\par
+\par
+\par
+module adder (input  logic[31:0] a, b,\par
+              output logic[31:0] y);\par
+     \par
+     assign y = a + b;\par
+endmodule\par
+\par
+module sl2 (input  logic[31:0] a,\par
+            output logic[31:0] y);\par
+     \par
+     assign y = \{a[29:0], 2'b00\}; // shifts left by 2\par
+endmodule\par
+\par
+module signext (input  logic[15:0] a,\par
+                output logic[31:0] y);\par
+              \par
+  assign y = \{\{16\{a[15]\}\}, a\};    // sign-extends 16-bit a\par
+endmodule\par
+\par
+// parameterized register\par
+module flopr #(parameter WIDTH = 8)\par
+              (input logic clk, reset, \par
+\tab        input logic[WIDTH-1:0] d, \par
+               output logic[WIDTH-1:0] q);\par
+\par
+  always_ff@(posedge clk, posedge reset)\par
+    if (reset) q <= 0; \par
+    else       q <= d;\par
+endmodule\par
+\par
+\par
+// paramaterized 2-to-1 MUX\par
+module mux2 #(parameter WIDTH = 8)\par
+             (input  logic[WIDTH-1:0] d0, d1,  \par
+              input  logic s, \par
+              output logic[WIDTH-1:0] y);\par
+  \par
+   assign y = s ? d1 : d0; \par
+endmodule\par
+\par
+\par
+}
+ 
