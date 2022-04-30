@@ -1,0 +1,85 @@
+Vivado Simulator 2020.1
+Copyright 1986-1999, 2001-2020 Xilinx, Inc. All Rights Reserved.
+Running: D:/XilinxVivado/Vivado/2020.1/bin/unwrapped/win64.o/xelab.exe -wto fa4fdbbb708347f6bf7dbd32f5bc70db --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot mips_tb_behav xil_defaultlib.mips_tb xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3091] actual bit length 5 differs from formal bit length 1 for port 'we3' [D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv:250]
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 346. Module mips doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 419. Module controller doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 452. Module maindec doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 473. Module aludec doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 192. Module datapath doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 566. Module mux2(WIDTH=32) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 8. Module PipeWtoF doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 380. Module imem doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 535. Module adder doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 29. Module PipeFtoD doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 491. Module regfile doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 547. Module signext doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 48. Module PipeDtoE doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 574. Module mux4(WIDTH=32) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 574. Module mux4(WIDTH=32) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 566. Module mux2(WIDTH=32) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 516. Module alu doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 566. Module mux2(WIDTH=5) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 541. Module sl2 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 535. Module adder doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 108. Module PipeEtoM doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 438. Module dmem doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 141. Module PipeMtoW doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 566. Module mux2(WIDTH=32) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 301. Module HazardUnit doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 346. Module mips doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 419. Module controller doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 452. Module maindec doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 473. Module aludec doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 192. Module datapath doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 566. Module mux2(WIDTH=32) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 8. Module PipeWtoF doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 380. Module imem doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 535. Module adder doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 29. Module PipeFtoD doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 491. Module regfile doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 547. Module signext doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 48. Module PipeDtoE doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 574. Module mux4(WIDTH=32) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 574. Module mux4(WIDTH=32) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 566. Module mux2(WIDTH=32) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 516. Module alu doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 566. Module mux2(WIDTH=5) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 541. Module sl2 doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 535. Module adder doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 108. Module PipeEtoM doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 438. Module dmem doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 141. Module PipeMtoW doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 566. Module mux2(WIDTH=32) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/bilkent/3rdYear/Fall/CS224/Labs/Lab5/PipelinedMIPSModelFilled.sv" Line 301. Module HazardUnit doesn't have a timescale but at least one module in design has a timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.maindec
+Compiling module xil_defaultlib.aludec
+Compiling module xil_defaultlib.controller
+Compiling module xil_defaultlib.mux2(WIDTH=32)
+Compiling module xil_defaultlib.PipeWtoF
+Compiling module xil_defaultlib.imem
+Compiling module xil_defaultlib.adder
+Compiling module xil_defaultlib.PipeFtoD
+Compiling module xil_defaultlib.regfile
+Compiling module xil_defaultlib.signext
+Compiling module xil_defaultlib.PipeDtoE
+Compiling module xil_defaultlib.mux4(WIDTH=32)
+Compiling module xil_defaultlib.alu
+Compiling module xil_defaultlib.mux2(WIDTH=5)
+Compiling module xil_defaultlib.sl2
+Compiling module xil_defaultlib.PipeEtoM
+Compiling module xil_defaultlib.dmem
+Compiling module xil_defaultlib.PipeMtoW
+Compiling module xil_defaultlib.datapath
+Compiling module xil_defaultlib.HazardUnit
+Compiling module xil_defaultlib.mips
+Compiling module xil_defaultlib.mips_tb
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot mips_tb_behav
