@@ -1,0 +1,110 @@
+CS224 / Lab 07
+Section 02
+Burak Ozturk
+21901841
+	
+Part A--------------------------------------------------------------------------------------
+
+I am using A port to write to the motor and for this
+I set tristate-A register 1 and 2 to 0,
+LAT-A registers 1 and 2 to 1.
+
+I am using E port to write to the motor and for this
+I set tristate-E register 0 and 1 to 1,
+LAT-E registers 0 and 1 to 0.
+
+Part B--------------------------------------------------------------------------------------
+
+void main() {
+
+	AD1PCFG = 0xFFFF;
+
+	DDPCON.JTAGEN = 0; // disable JTAG
+
+	TRISA = 0x0;  //portA[1:2] are outputs to run the DC motor.
+	TRISE = 0XC;  //portE[0:1] are inputs to read push-buttons. / binary repr of hex C = 1100
+	
+	// binary repr of hex 6 = 0110
+	LATA = 0X6;
+	LATE = 0X0;
+
+	while(1)
+	{	
+		// If inputs are equal stop the motor
+		if (portEbits.RE0 == portEbits.RE1) {
+			portAbits.RA1 = 0;
+			portAbits.RA2 = 0;
+		}
+		// Else run the motor
+		else {
+			// If button 0 is pressed run clockwise (*probably)
+			if (portEbits.RE0) {
+				portAbits.RA1 = portEbits.RE0;
+				portAbits.RA2 = portEbits.RE1;
+			}
+			// Else run counter-clockwise (*probably)
+			else {
+				portAbits.RA1 = portEbits.RE1;
+				portAbits.RA2 = portEbits.RE0;
+			}
+			// *: I couldn't figure it out for sure without trying it on board
+		}
+	}//while
+
+}//main
+
+Part C--------------------------------------------------------------------------------------
+
+I am using A port to write to D inputs
+I set tristate-A registers to all 0,
+
+I am using E port to write to EN inputs
+I set tristate-E registers from 0 to 3 to 0,
+
+Part D--------------------------------------------------------------------------------------
+
+// Hexadecimal values for digits in 7 segment
+//                                       1    2    3    4    5    6    7    8    9
+const unsigned char binary_pattern[]={0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F};
+int i;
+
+void main() {
+	AD1PCFG = 0xFFFF;
+	DDPCON.JTAGEN = 0; // disable JTAG
+	
+	TRISA = 0x00;	// portA is  D output
+	TRISE = 0x0;	// portE is EN output
+
+	while (1) {
+		// This loop will take about 1 second every time it runs
+		// and since 252 is a multiple of 9, it will run flawlessly
+		// between loops
+		while (i < 252) {
+			// Digit 1
+			PORTA = binary_pattern[i%9];
+			PORTE = 0x01;
+			Delay_ms(1);
+			
+			// Digit 2
+			PORTA = binary_pattern[(i+1)%9];
+			PORTE = 0x02;
+			Delay_ms(1);
+			
+			// Digit 3
+			PORTA = binary_pattern[(i+2)%9];
+			PORTE = 0x04;
+			Delay_ms(1);
+			
+			// Digit 4
+			PORTA = binary_pattern[(i+3)%9];
+			PORTE = 0x08;
+			Delay_ms(1);
+
+			i++;
+		}
+	i = 0;
+	}
+} //main
+
+
+
